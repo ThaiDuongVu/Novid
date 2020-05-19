@@ -7,7 +7,7 @@ import android.widget.TextView;
 class DisplayElement {
     private TextView oldTextView;
     private TextView newTextView;
-    private  TextView totalTextView;
+    private TextView totalTextView;
 
     private ProgressBar progressBar;
 

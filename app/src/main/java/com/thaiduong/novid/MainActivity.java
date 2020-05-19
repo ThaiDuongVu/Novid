@@ -1,9 +1,11 @@
 package com.thaiduong.novid;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +21,8 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
     private RequestQueue requestQueue;
@@ -27,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
     private DisplayElement deaths;
     private DisplayElement recovered;
 
+    private ArrayList<String> countries = new ArrayList<String>();
+    private Spinner spinner;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,11 +41,36 @@ public class MainActivity extends AppCompatActivity {
 
         requestQueue = Volley.newRequestQueue(this);
 
-        confirmed = new DisplayElement((TextView) findViewById(R.id.oldConfirmedTextView),(TextView) findViewById(R.id.newConfirmedTextView),(TextView) findViewById(R.id.totalConfirmedTextView),(ProgressBar) findViewById(R.id.confirmedProgressBar));
-        deaths = new DisplayElement((TextView) findViewById(R.id.oldDeathTextView),(TextView) findViewById(R.id.newDeathTextView),(TextView) findViewById(R.id.totalDeathTextView),(ProgressBar) findViewById(R.id.deathProgressBar));
-        recovered = new DisplayElement((TextView) findViewById(R.id.oldRecoveredTextView),(TextView) findViewById(R.id.newRecoveredTextView),(TextView) findViewById(R.id.totalRecoveredTextView),(ProgressBar) findViewById(R.id.recoveredProgressBar));
+        confirmed = new DisplayElement((TextView) findViewById(R.id.oldConfirmedTextView), (TextView) findViewById(R.id.newConfirmedTextView), (TextView) findViewById(R.id.totalConfirmedTextView), (ProgressBar) findViewById(R.id.confirmedProgressBar));
+        deaths = new DisplayElement((TextView) findViewById(R.id.oldDeathTextView), (TextView) findViewById(R.id.newDeathTextView), (TextView) findViewById(R.id.totalDeathTextView), (ProgressBar) findViewById(R.id.deathProgressBar));
+        recovered = new DisplayElement((TextView) findViewById(R.id.oldRecoveredTextView), (TextView) findViewById(R.id.newRecoveredTextView), (TextView) findViewById(R.id.totalRecoveredTextView), (ProgressBar) findViewById(R.id.recoveredProgressBar));
+
+        spinner = findViewById(R.id.spinner);
+        spinnerHandler(spinner);
 
         fetchData("Global");
+    }
+
+    private void spinnerHandler(Spinner spinner) {
+        countries.add("Vietnam");
+        countries.add("China");
+        countries.add("Canada");
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, R.layout.custom_spinner, countries);
+        arrayAdapter.setDropDownViewResource(R.layout.custom_spinner_dropdown);
+
+        spinner.setAdapter(arrayAdapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     public void update(View view) {
@@ -54,18 +86,24 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             JSONObject dataObject = response.getJSONObject(scope);
 
-                            int newConfirmed = dataObject.getInt("NewConfirmed");
-                            int totalConfirmed = dataObject.getInt("TotalConfirmed");
+                            if (scope.equals("Global")) {
+                                int newConfirmed = dataObject.getInt("NewConfirmed");
+                                int totalConfirmed = dataObject.getInt("TotalConfirmed");
 
-                            int newDeath = dataObject.getInt("NewDeaths");
-                            int totalDeaths = dataObject.getInt("TotalDeaths");
+                                int newDeath = dataObject.getInt("NewDeaths");
+                                int totalDeaths = dataObject.getInt("TotalDeaths");
 
-                            int newRecovered = dataObject.getInt("NewRecovered");
-                            int totalRecovered = dataObject.getInt("TotalRecovered");
+                                int newRecovered = dataObject.getInt("NewRecovered");
+                                int totalRecovered = dataObject.getInt("TotalRecovered");
 
-                            confirmed.update(newConfirmed, totalConfirmed);
-                            deaths.update(newDeath, totalDeaths);
-                            recovered.update(newRecovered, totalRecovered);
+                                confirmed.update(newConfirmed, totalConfirmed);
+                                deaths.update(newDeath, totalDeaths);
+                                recovered.update(newRecovered, totalRecovered);
+                            }
+//                            else {
+//                                int length = dataObject.length();
+//
+//                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
