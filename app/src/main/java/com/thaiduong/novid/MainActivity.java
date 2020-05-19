@@ -1,5 +1,6 @@
 package com.thaiduong.novid;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -20,14 +21,11 @@ import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
 
-    private String url = "https://api.covid19api.com/summary";
     private RequestQueue requestQueue;
 
-    private TextView totalConfirmedTextView;
-    private TextView oldConfirmedTextView;
-    private TextView newConfirmedTextView;
-
-    private ProgressBar confirmedProgressBar;
+    private DisplayElement confirmed;
+    private DisplayElement deaths;
+    private DisplayElement recovered;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,18 +34,19 @@ public class MainActivity extends AppCompatActivity {
 
         requestQueue = Volley.newRequestQueue(this);
 
-        totalConfirmedTextView = findViewById(R.id.totalConfirmedTextView);
-        oldConfirmedTextView = findViewById(R.id.oldConfirmedTextView);
-        newConfirmedTextView = findViewById(R.id.newConfirmedTextView);
+        confirmed = new DisplayElement((TextView) findViewById(R.id.oldConfirmedTextView),(TextView) findViewById(R.id.newConfirmedTextView),(TextView) findViewById(R.id.totalConfirmedTextView),(ProgressBar) findViewById(R.id.confirmedProgressBar));
+        deaths = new DisplayElement((TextView) findViewById(R.id.oldDeathTextView),(TextView) findViewById(R.id.newDeathTextView),(TextView) findViewById(R.id.totalDeathTextView),(ProgressBar) findViewById(R.id.deathProgressBar));
+        recovered = new DisplayElement((TextView) findViewById(R.id.oldRecoveredTextView),(TextView) findViewById(R.id.newRecoveredTextView),(TextView) findViewById(R.id.totalRecoveredTextView),(ProgressBar) findViewById(R.id.recoveredProgressBar));
 
-        confirmedProgressBar = findViewById(R.id.confirmedProgressBar);
+        fetchData("Global");
     }
 
-    public void globalUpdate(View view) {
+    public void update(View view) {
         fetchData("Global");
     }
 
     private void fetchData(final String scope) {
+        String url = "https://api.covid19api.com/summary";
         JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -58,7 +57,15 @@ public class MainActivity extends AppCompatActivity {
                             int newConfirmed = dataObject.getInt("NewConfirmed");
                             int totalConfirmed = dataObject.getInt("TotalConfirmed");
 
-                            updateConfirmed(newConfirmed, totalConfirmed);
+                            int newDeath = dataObject.getInt("NewDeaths");
+                            int totalDeaths = dataObject.getInt("TotalDeaths");
+
+                            int newRecovered = dataObject.getInt("NewRecovered");
+                            int totalRecovered = dataObject.getInt("TotalRecovered");
+
+                            confirmed.update(newConfirmed, totalConfirmed);
+                            deaths.update(newDeath, totalDeaths);
+                            recovered.update(newRecovered, totalRecovered);
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
@@ -72,12 +79,5 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
         requestQueue.add(objectRequest);
-    }
-
-    private void updateConfirmed(int newConfirmed, int totalConfirmed) {
-        newConfirmedTextView.setText("New: " + newConfirmed);
-        totalConfirmedTextView.setText("Total: " + totalConfirmed);
-
-        oldConfirmedTextView.setText("Old: " + (totalConfirmed - newConfirmed));
     }
 }

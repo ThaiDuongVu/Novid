@@ -3,6 +3,8 @@
 
     <string name="global_text_view">Global</string>
     <string name="confirmed_text_view">Confirmed:</string>
+    <string name="death_text_view">Deaths:</string>
+    <string name="recovered_text_view">Recovered:</string>
     <string name="update_button">Update</string>
 
     <string name="old_text_view">Old:</string>
