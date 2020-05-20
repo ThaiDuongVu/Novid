@@ -33,11 +33,12 @@ public class StatsActivity extends AppCompatActivity {
     private DisplayElement deaths;
     private DisplayElement recovered;
 
-    private ArrayList<String> countries = new ArrayList<>();
     private Spinner spinner;
 
     private String scope;
     private int scopeIndex;
+
+    private ArrayList<String> countryList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,20 +57,21 @@ public class StatsActivity extends AppCompatActivity {
         recovered = new DisplayElement((TextView) findViewById(R.id.oldRecoveredTextView), (TextView) findViewById(R.id.newRecoveredTextView), (TextView) findViewById(R.id.totalRecoveredTextView), (ProgressBar) findViewById(R.id.recoveredProgressBar));
 
         spinner = findViewById(R.id.spinner);
+        countryList = new ArrayList<>();
 
-        fetchData("Global", -1);
-        fetchData("Countries", -1);
+        fetchData("Global", 0);
+        fetchData("Countries", 0);
     }
 
-    private void spinnerHandler(Spinner spinner, final ArrayList<String> countries) {
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, R.layout.custom_spinner, countries);
+    private void spinnerHandler(Spinner spinner, final ArrayList<String> countryList) {
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, R.layout.custom_spinner, countryList);
         arrayAdapter.setDropDownViewResource(R.layout.custom_spinner_dropdown);
 
         spinner.setAdapter(arrayAdapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                scope = countries.get(position);
+                scope = countryList.get(position);
                 scopeIndex = position - 1;
             }
 
@@ -95,14 +97,13 @@ public class StatsActivity extends AppCompatActivity {
                                 JSONArray dataArray = response.getJSONArray("Countries");
                                 int length = dataArray.length();
 
-                                countries.add("Global");
+                                countryList.add("Global");
                                 for (int i = 0; i < length; i++) {
-                                    countries.add(dataArray.getJSONObject(i).getString("Country"));
+                                    countryList.add(dataArray.getJSONObject(i).getString("Country"));
                                 }
 
-                                spinnerHandler(spinner, countries);
-                            }
-                            else {
+                                spinnerHandler(spinner, countryList);
+                            } else {
                                 JSONObject dataObject;
 
                                 if (scope.equals("Global")) {
@@ -112,18 +113,9 @@ public class StatsActivity extends AppCompatActivity {
                                     dataObject = dataArray.getJSONObject(scopeIndex);
                                 }
 
-                                int newConfirmed = dataObject.getInt("NewConfirmed");
-                                int totalConfirmed = dataObject.getInt("TotalConfirmed");
-
-                                int newDeath = dataObject.getInt("NewDeaths");
-                                int totalDeaths = dataObject.getInt("TotalDeaths");
-
-                                int newRecovered = dataObject.getInt("NewRecovered");
-                                int totalRecovered = dataObject.getInt("TotalRecovered");
-
-                                confirmed.update(newConfirmed, totalConfirmed);
-                                deaths.update(newDeath, totalDeaths);
-                                recovered.update(newRecovered, totalRecovered);
+                                confirmed.updateStats(dataObject.getInt("NewConfirmed"), dataObject.getInt("TotalConfirmed"));
+                                deaths.updateStats(dataObject.getInt("NewDeaths"), dataObject.getInt("TotalDeaths"));
+                                recovered.updateStats(dataObject.getInt("NewRecovered"), dataObject.getInt("TotalRecovered"));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
