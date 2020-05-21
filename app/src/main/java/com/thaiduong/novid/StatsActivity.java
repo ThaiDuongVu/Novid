@@ -63,7 +63,7 @@ public class StatsActivity extends AppCompatActivity {
 
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
-        fetchData("Global", 1);
+        fetchData(getResources().getString(R.string.global_text_view), 1);
         fetchData("Countries", 1);
     }
 
@@ -76,7 +76,12 @@ public class StatsActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 scope = countryList.get(position);
-                scopeIndex = position - 1;
+
+                if (scopeIndex > 0) {
+                    scopeIndex = position - 1;
+                } else {
+                    scopeIndex = 0;
+                }
 
                 vibrator.vibrate(vibratingDuration);
             }
@@ -113,8 +118,8 @@ public class StatsActivity extends AppCompatActivity {
                             } else {
                                 JSONObject dataObject;
 
-                                if (scope.equals("Global")) {
-                                    dataObject = response.getJSONObject(scope);
+                                if (scope.equals(getResources().getString(R.string.global_text_view))) {
+                                    dataObject = response.getJSONObject("Global");
                                 } else {
                                     JSONArray dataArray = response.getJSONArray("Countries");
                                     dataObject = dataArray.getJSONObject(scopeIndex);
@@ -126,8 +131,6 @@ public class StatsActivity extends AppCompatActivity {
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
-
                             fetchData(scope, scopeIndex);
                         }
                     }
@@ -135,8 +138,6 @@ public class StatsActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
-
                         fetchData(scope, scopeIndex);
                     }
                 });

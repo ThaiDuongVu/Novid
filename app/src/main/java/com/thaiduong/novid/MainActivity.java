@@ -73,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
                             timeTextView.setText(getResources().getString(R.string.time_text_view) + " " + response.getJSONArray("Countries").getJSONObject(0).getString("Date"));
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
                             fetchData();
                         }
                     }
@@ -81,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
                         fetchData();
                     }
                 });

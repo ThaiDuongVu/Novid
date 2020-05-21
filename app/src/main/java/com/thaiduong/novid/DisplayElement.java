@@ -31,10 +31,10 @@ class DisplayElement {
     }
 
     @SuppressLint("SetTextI18n")
-    void updateCompare(int compareElement1, int compareElement2, Resources resources) {
-        leftTextView.setText(compareElement1 + "");
-        rightTextView.setText(compareElement2 + "");
-        totalTextView.setText(resources.getString(R.string.total_text_view) + " " + (compareElement1 + compareElement2));
+    void updateCompare(int compareElement1, int compareElement2, String[] flags, int country1Index, int country2Index) {
+        leftTextView.setText(flags[country1Index] + ": " + compareElement1);
+        rightTextView.setText(flags[country2Index] + ": " + compareElement2);
+        totalTextView.setText(flags[country1Index] + " + " + flags[country2Index] + ": " + (compareElement1 + compareElement2));
 
         progressBar.setMax(compareElement1 + compareElement2);
         progressBar.setProgress(compareElement1);

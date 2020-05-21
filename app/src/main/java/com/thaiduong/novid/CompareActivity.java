@@ -25,6 +25,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class CompareActivity extends AppCompatActivity {
 
@@ -46,6 +47,8 @@ public class CompareActivity extends AppCompatActivity {
     private Vibrator vibrator;
     private int vibratingDuration = 50;
 
+    private Random random = new Random();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +67,7 @@ public class CompareActivity extends AppCompatActivity {
 
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
-        fetchData("Countries", 0, 0);
+        fetchData("Countries", 0, 1);
     }
 
     private void spinnerHandler(Spinner spinner, ArrayList<String> countryList, final int index) {
@@ -96,6 +99,11 @@ public class CompareActivity extends AppCompatActivity {
     }
 
     private void fetchData(final String scope, final int country1Index, final int country2Index) {
+        if (country1Index == country2Index) {
+            Toast.makeText(getApplicationContext(), "Cannot compare the same country", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         String url = "https://api.covid19api.com/summary";
         final JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
@@ -113,6 +121,8 @@ public class CompareActivity extends AppCompatActivity {
                                 spinnerHandler(spinner1, countryList, 1);
                                 spinnerHandler(spinner2, countryList, 2);
 
+                                fetchData("Compare", random.nextInt(countryList.size()), random.nextInt(countryList.size()));
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                                 Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
@@ -124,13 +134,16 @@ public class CompareActivity extends AppCompatActivity {
                                 JSONObject dataObject1 = dataArray.getJSONObject(country1Index);
                                 JSONObject dataObject2 = dataArray.getJSONObject(country2Index);
 
-                                confirmed.updateCompare(dataObject1.getInt("TotalConfirmed"), dataObject2.getInt("TotalConfirmed"), getResources());
-                                deaths.updateCompare(dataObject1.getInt("TotalDeaths"), dataObject2.getInt("TotalDeaths"), getResources());
-                                recovered.updateCompare(dataObject1.getInt("TotalRecovered"), dataObject2.getInt("TotalRecovered"), getResources());
+                                confirmed.updateCompare(dataObject1.getInt("TotalConfirmed"), dataObject2.getInt("TotalConfirmed"), flags, country1Index, country2Index);
+                                deaths.updateCompare(dataObject1.getInt("TotalDeaths"), dataObject2.getInt("TotalDeaths"), flags, country1Index, country2Index);
+                                recovered.updateCompare(dataObject1.getInt("TotalRecovered"), dataObject2.getInt("TotalRecovered"), flags, country1Index, country2Index);
+
+                                spinner1.setSelection(country1Index);
+                                spinner2.setSelection(country2Index);
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
-                                Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                                fetchData(scope, country1Index, country2Index);
                             }
                         }
                     }
@@ -138,7 +151,7 @@ public class CompareActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                        fetchData(scope, country1Index, country2Index);
                     }
                 });
         requestQueue.add(objectRequest);
