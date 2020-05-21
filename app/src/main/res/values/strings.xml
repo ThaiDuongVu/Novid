@@ -2,17 +2,207 @@
     <string name="app_name">Novid</string>
 
     <string name="description">👀 Track Covid-19 stats globally</string>
-    <string name="global_text_view">Global</string>
+    <string name="global_text_view">🌐 Global</string>
+    <string name="time_text_view">🕓 Updated time: </string>
 
-    <string name="confirmed_text_view">Confirmed:</string>
-    <string name="death_text_view">Deaths:</string>
-    <string name="recovered_text_view">Recovered:</string>
+    <string name="confirmed_text_view">😷 Confirmed:</string>
+    <string name="death_text_view">🙏 Deaths:</string>
+    <string name="recovered_text_view">💪 Recovered:</string>
 
     <string name="stats_button">📊 Detailed Stats</string>
     <string name="compare_button">📏 Compare</string>
     <string name="update_button">🔄 Update</string>
 
-    <string name="old_text_view">Old:</string>
-    <string name="new_text_view">New:</string>
-    <string name="total_text_view">Total:</string>
+    <string name="old_text_view">📅 Old:</string>
+    <string name="new_text_view">👁‍🗨 New:</string>
+    <string name="total_text_view">➕ Total:</string>
+
+    <string-array name="flags">
+        <item>🇦🇫</item>
+        <item>🇦🇱</item>
+        <item>🇩🇿</item>
+        <item>🇦🇩</item>
+        <item>🇦🇴</item>
+        <item>🇦🇬</item>
+        <item>🇦🇷</item>
+        <item>🇦🇲</item>
+        <item>🇦🇺</item>
+        <item>🇦🇹</item>
+        <item>🇦🇿</item>
+        <item>🇧🇸</item>
+        <item>🇧🇭</item>
+        <item>🇧🇩</item>
+        <item>🇧🇧</item>
+        <item>🇧🇾</item>
+        <item>🇧🇪</item>
+        <item>🇧🇿</item>
+        <item>🇧🇯</item>
+        <item>🇧🇹</item>
+        <item>🇧🇴</item>
+        <item>🇧🇦</item>
+        <item>🇧🇼</item>
+        <item>🇧🇷</item>
+        <item>🇧🇳</item>
+        <item>🇧🇬</item>
+        <item>🇧🇫</item>
+        <item>🇧🇮</item>
+        <item>🇰🇭</item>
+        <item>🇨🇲</item>
+        <item>🇨🇦</item>
+        <item>🇨🇻</item>
+        <item>🇨🇫</item>
+        <item>🇹🇩</item>
+        <item>🇨🇱</item>
+        <item>🇨🇳</item>
+        <item>🇨🇴</item>
+        <item>🇰🇲</item>
+        <item>🇨🇬</item>
+        <item>🇨🇩</item>
+        <item>🇨🇷</item>
+        <item>🇭🇷</item>
+        <item>🇨🇺</item>
+        <item>🇨🇾</item>
+        <item>🇨🇿</item>
+        <item>🇨🇮</item>
+        <item>🇩🇰</item>
+        <item>🇩🇯</item>
+        <item>🇩🇲</item>
+        <item>🇩🇴</item>
+        <item>🇪🇨</item>
+        <item>🇪🇬</item>
+        <item>🇸🇻</item>
+        <item>🇬🇶</item>
+        <item>🇪🇷</item>
+        <item>🇪🇪</item>
+        <item>🇪🇹</item>
+        <item>🇫🇯</item>
+        <item>🇫🇮</item>
+        <item>🇫🇷</item>
+        <item>🇬🇦</item>
+        <item>🇬🇲</item>
+        <item>🇬🇪</item>
+        <item>🇩🇪</item>
+        <item>🇬🇭</item>
+        <item>🇬🇷</item>
+        <item>🇬🇩</item>
+        <item>🇬🇹</item>
+        <item>🇬🇳</item>
+        <item>🇬🇼</item>
+        <item>🇬🇾</item>
+        <item>🇭🇹</item>
+        <item>🇻🇦</item>
+        <item>🇭🇳</item>
+        <item>🇭🇺</item>
+        <item>🇮🇸</item>
+        <item>🇮🇳</item>
+        <item>🇮🇩</item>
+        <item>🇮🇷</item>
+        <item>🇮🇶</item>
+        <item>🇮🇪</item>
+        <item>🇮🇱</item>
+        <item>🇮🇹</item>
+        <item>🇯🇲</item>
+        <item>🇯🇵</item>
+        <item>🇯🇴</item>
+        <item>🇰🇿</item>
+        <item>🇰🇪</item>
+        <item>🇰🇷</item>
+        <item>🇰🇼</item>
+        <item>🇰🇬</item>
+        <item>🇱🇦</item>
+        <item>🇱🇻</item>
+        <item>🇱🇧</item>
+        <item>🇱🇸</item>
+        <item>🇱🇷</item>
+        <item>🇱🇾</item>
+        <item>🇱🇮</item>
+        <item>🇱🇹</item>
+        <item>🇱🇺</item>
+        <item>🇲🇰</item>
+        <item>🇲🇬</item>
+        <item>🇲🇼</item>
+        <item>🇲🇾</item>
+        <item>🇲🇻</item>
+        <item>🇲🇱</item>
+        <item>🇲🇹</item>
+        <item>🇲🇷</item>
+        <item>🇲🇺</item>
+        <item>🇲🇽</item>
+        <item>🇲🇩</item>
+        <item>🇲🇨</item>
+        <item>🇲🇳</item>
+        <item>🇲🇪</item>
+        <item>🇲🇦</item>
+        <item>🇲🇿</item>
+        <item>🇲🇲</item>
+        <item>🇳🇦</item>
+        <item>🇳🇵</item>
+        <item>🇳🇱</item>
+        <item>🇳🇿</item>
+        <item>🇳🇮</item>
+        <item>🇳🇪</item>
+        <item>🇳🇬</item>
+        <item>🇳🇴</item>
+        <item>🇴🇲</item>
+        <item>🇵🇰</item>
+        <item>🇵🇸</item>
+        <item>🇵🇦</item>
+        <item>🇵🇬</item>
+        <item>🇵🇾</item>
+        <item>🇵🇪</item>
+        <item>🇵🇭</item>
+        <item>🇵🇱</item>
+        <item>🇵🇹</item>
+        <item>🇶🇦</item>
+        <item>🇽🇰</item>
+        <item>🇷🇴</item>
+        <item>🇷🇺</item>
+        <item>🇷🇼</item>
+        <item>🇰🇳</item>
+        <item>🇱🇨</item>
+        <item>🇻🇨</item>
+        <item>🇸🇲</item>
+        <item>🇸🇹</item>
+        <item>🇸🇦</item>
+        <item>🇸🇳</item>
+        <item>🇷🇸</item>
+        <item>🇸🇨</item>
+        <item>🇸🇱</item>
+        <item>🇸🇬</item>
+        <item>🇸🇰</item>
+        <item>🇸🇮</item>
+        <item>🇸🇴</item>
+        <item>🇿🇦</item>
+        <item>🇸🇸</item>
+        <item>🇪🇸</item>
+        <item>🇱🇰</item>
+        <item>🇸🇩</item>
+        <item>🇸🇷</item>
+        <item>🇸🇿</item>
+        <item>🇸🇪</item>
+        <item>🇨🇭</item>
+        <item>🇸🇾</item>
+        <item>🇹🇼</item>
+        <item>🇹🇯</item>
+        <item>🇹🇿</item>
+        <item>🇹🇭</item>
+        <item>🇹🇱</item>
+        <item>🇹🇬</item>
+        <item>🇹🇹</item>
+        <item>🇹🇳</item>
+        <item>🇹🇷</item>
+        <item>🇺🇬</item>
+        <item>🇺🇦</item>
+        <item>🇦🇪</item>
+        <item>🇬🇧</item>
+        <item>🇺🇸</item>
+        <item>🇺🇾</item>
+        <item>🇺🇿</item>
+        <item>🇻🇪</item>
+        <item>🇻🇳</item>
+        <item>🇪🇭</item>
+        <item>🇾🇪</item>
+        <item>🇿🇲</item>
+        <item>🇿🇼</item>
+    </string-array>
 </resources>

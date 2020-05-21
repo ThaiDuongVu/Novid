@@ -39,6 +39,7 @@ public class StatsActivity extends AppCompatActivity {
     private int scopeIndex;
 
     private ArrayList<String> countryList;
+    private String[] flags;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,10 +58,12 @@ public class StatsActivity extends AppCompatActivity {
         recovered = new DisplayElement((TextView) findViewById(R.id.oldRecoveredTextView), (TextView) findViewById(R.id.newRecoveredTextView), (TextView) findViewById(R.id.totalRecoveredTextView), (ProgressBar) findViewById(R.id.recoveredProgressBar));
 
         spinner = findViewById(R.id.spinner);
-        countryList = new ArrayList<>();
 
-        fetchData("Global", 0);
-        fetchData("Countries", 0);
+        countryList = new ArrayList<>();
+        flags = getResources().getStringArray(R.array.flags);
+
+        fetchData("Global", 1);
+        fetchData("Countries", 1);
     }
 
     private void spinnerHandler(Spinner spinner, final ArrayList<String> countryList) {
@@ -97,9 +100,9 @@ public class StatsActivity extends AppCompatActivity {
                                 JSONArray dataArray = response.getJSONArray("Countries");
                                 int length = dataArray.length();
 
-                                countryList.add("Global");
+                                countryList.add(getResources().getString(R.string.global_text_view));
                                 for (int i = 0; i < length; i++) {
-                                    countryList.add(dataArray.getJSONObject(i).getString("Country"));
+                                    countryList.add(flags[i] + " " + dataArray.getJSONObject(i).getString("Country"));
                                 }
 
                                 spinnerHandler(spinner, countryList);
@@ -113,9 +116,9 @@ public class StatsActivity extends AppCompatActivity {
                                     dataObject = dataArray.getJSONObject(scopeIndex);
                                 }
 
-                                confirmed.updateStats(dataObject.getInt("NewConfirmed"), dataObject.getInt("TotalConfirmed"));
-                                deaths.updateStats(dataObject.getInt("NewDeaths"), dataObject.getInt("TotalDeaths"));
-                                recovered.updateStats(dataObject.getInt("NewRecovered"), dataObject.getInt("TotalRecovered"));
+                                confirmed.updateStats(dataObject.getInt("NewConfirmed"), dataObject.getInt("TotalConfirmed"), getResources());
+                                deaths.updateStats(dataObject.getInt("NewDeaths"), dataObject.getInt("TotalDeaths"), getResources());
+                                recovered.updateStats(dataObject.getInt("NewRecovered"), dataObject.getInt("TotalRecovered"), getResources());
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

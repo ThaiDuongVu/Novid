@@ -1,6 +1,7 @@
 package com.thaiduong.novid;
 
 import android.annotation.SuppressLint;
+import android.content.res.Resources;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,10 +33,10 @@ class DisplayElement {
     }
 
     @SuppressLint("SetTextI18n")
-    void updateStats(int newInt, int total) {
-        leftTextView.setText("Old: " + (total - newInt));
-        rightTextView.setText("New: " + newInt);
-        totalTextView.setText("Total: " + total);
+    void updateStats(int newInt, int total, Resources resources) {
+        leftTextView.setText(resources.getString(R.string.old_text_view) + " " + (total - newInt));
+        rightTextView.setText(resources.getString(R.string.new_text_view) + newInt);
+        totalTextView.setText(resources.getString(R.string.total_text_view) + total);
 
         progressBar.setMax(total);
         progressBar.setProgress(total - newInt);

@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private RequestQueue requestQueue;
 
     private TextView globalTextView;
+    private TextView timeTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
         requestQueue = Volley.newRequestQueue(this);
 
         globalTextView = findViewById(R.id.globalTextView);
+        timeTextView = findViewById(R.id.timeTextView);
+
         fetchData();
     }
 
@@ -55,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         try {
                             globalTextView.setText("🌎 Global confirmed cases: " + response.getJSONObject("Global").getInt("TotalConfirmed"));
+                            timeTextView.setText(getResources().getString(R.string.time_text_view) + " " + response.getJSONArray("Countries").getJSONObject(0).getString("Date"));
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
