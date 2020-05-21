@@ -1,8 +1,10 @@
 package com.thaiduong.novid;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +29,9 @@ public class MainActivity extends AppCompatActivity {
     private TextView globalTextView;
     private TextView timeTextView;
 
+    private Vibrator vibrator;
+    private int vibratingDuration = 50;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,15 +42,21 @@ public class MainActivity extends AppCompatActivity {
         globalTextView = findViewById(R.id.globalTextView);
         timeTextView = findViewById(R.id.timeTextView);
 
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
         fetchData();
     }
 
     public void stats(View view) {
+        vibrator.vibrate(vibratingDuration);
+
         Intent statsIntent = new Intent(getApplicationContext(), StatsActivity.class);
         startActivity(statsIntent);
     }
 
     public void compare(View view) {
+        vibrator.vibrate(vibratingDuration);
+
         Intent statsIntent = new Intent(getApplicationContext(), CompareActivity.class);
         startActivity(statsIntent);
     }

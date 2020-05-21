@@ -3,7 +3,9 @@ package com.thaiduong.novid;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -38,18 +40,16 @@ public class StatsActivity extends AppCompatActivity {
     private String scope;
     private int scopeIndex;
 
-    private ArrayList<String> countryList;
+    private ArrayList<String> countryList = new ArrayList<>();
     private String[] flags;
+
+    private Vibrator vibrator;
+    private int vibratingDuration = 50;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stats);
-
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
 
         requestQueue = Volley.newRequestQueue(this);
 
@@ -59,8 +59,9 @@ public class StatsActivity extends AppCompatActivity {
 
         spinner = findViewById(R.id.spinner);
 
-        countryList = new ArrayList<>();
         flags = getResources().getStringArray(R.array.flags);
+
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         fetchData("Global", 1);
         fetchData("Countries", 1);
@@ -76,6 +77,8 @@ public class StatsActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 scope = countryList.get(position);
                 scopeIndex = position - 1;
+
+                vibrator.vibrate(vibratingDuration);
             }
 
             @Override
@@ -86,6 +89,7 @@ public class StatsActivity extends AppCompatActivity {
     }
 
     public void update(View view) {
+        vibrator.vibrate(vibratingDuration);
         fetchData(scope, scopeIndex);
     }
 

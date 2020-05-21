@@ -1,6 +1,8 @@
 package com.thaiduong.novid;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -41,6 +43,9 @@ public class CompareActivity extends AppCompatActivity {
 
     private RequestQueue requestQueue;
 
+    private Vibrator vibrator;
+    private int vibratingDuration = 50;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +61,8 @@ public class CompareActivity extends AppCompatActivity {
         recovered = new DisplayElement((TextView) findViewById(R.id.leftRecoveredTextView), (TextView) findViewById(R.id.rightRecoveredTextView), (TextView) findViewById(R.id.totalRecoveredTextView), (ProgressBar) findViewById(R.id.recoveredProgressBar));
 
         flags = getResources().getStringArray(R.array.flags);
+
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         fetchData("Countries", 0, 0);
     }
@@ -73,6 +80,7 @@ public class CompareActivity extends AppCompatActivity {
                 } else {
                     country2Index = position;
                 }
+                vibrator.vibrate(vibratingDuration);
             }
 
             @Override
@@ -83,6 +91,7 @@ public class CompareActivity extends AppCompatActivity {
     }
 
     public void update(View view) {
+        vibrator.vibrate(vibratingDuration);
         fetchData("Compare", country1Index, country2Index);
     }
 
