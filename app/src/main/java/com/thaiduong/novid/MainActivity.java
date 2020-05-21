@@ -46,7 +46,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void compare(View view) {
-
+        Intent statsIntent = new Intent(getApplicationContext(), CompareActivity.class);
+        startActivity(statsIntent);
     }
 
     private void fetchData() {
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                            fetchData();
                         }
                     }
                 },
@@ -69,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                        fetchData();
                     }
                 });
         requestQueue.add(objectRequest);

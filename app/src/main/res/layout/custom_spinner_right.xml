@@ -11,5 +11,5 @@
     android:textSize="22sp"
     android:fontFamily="@font/roboto_light"
     android:textStyle="bold"
-    android:textAlignment="center"
+    android:textAlignment="viewEnd"
     android:background="@drawable/abc_spinner_mtrl_am_alpha"/>

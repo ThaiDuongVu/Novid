@@ -6,7 +6,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
-    tools:context=".StatsActivity" >
+    tools:context=".CompareActivity" >
+
+    <Spinner
+        android:id="@+id/spinner1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="200dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:scaleX="1"
+        android:scaleY="1"
+        android:spinnerMode="dropdown"
+        android:textAlignment="viewStart"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.035"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.021" />
+
+    <Spinner
+        android:id="@+id/spinner2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="200dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:scaleX="1"
+        android:scaleY="1"
+        android:spinnerMode="dropdown"
+        android:textAlignment="viewEnd"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.021" />
 
     <TextView
         android:id="@+id/confirmedTextView"
@@ -21,7 +55,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.84" />
+        app:layout_constraintVertical_bias="0.851" />
 
     <ProgressBar
         android:id="@+id/confirmedProgressBar"
@@ -40,16 +74,16 @@
         android:scaleY="1.5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.191" />
 
     <TextView
-        android:id="@+id/newConfirmedTextView"
+        android:id="@+id/rightConfirmedTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto_light"
-        android:text="@string/new_text_view"
         android:textAlignment="viewEnd"
         android:textColor="@color/colorPrimary"
         android:textSize="18sp"
@@ -61,11 +95,10 @@
         app:layout_constraintVertical_bias="0.018" />
 
     <TextView
-        android:id="@+id/oldConfirmedTextView"
+        android:id="@+id/leftConfirmedTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto_light"
-        android:text="@string/old_text_view"
         android:textAlignment="viewStart"
         android:textColor="@color/colorPrimary"
         android:textSize="18sp"
@@ -100,6 +133,7 @@
         android:background="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.35" />
@@ -143,11 +177,10 @@
         app:layout_constraintVertical_bias="0.465" />
 
     <TextView
-        android:id="@+id/newDeathTextView"
+        android:id="@+id/rightDeathTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto_light"
-        android:text="@string/new_text_view"
         android:textAlignment="viewEnd"
         android:textColor="@color/colorPrimary"
         android:textSize="18sp"
@@ -159,11 +192,10 @@
         app:layout_constraintVertical_bias="0.025" />
 
     <TextView
-        android:id="@+id/oldDeathTextView"
+        android:id="@+id/leftDeathTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto_light"
-        android:text="@string/old_text_view"
         android:textAlignment="viewStart"
         android:textColor="@color/colorPrimary"
         android:textSize="18sp"
@@ -198,6 +230,7 @@
         android:background="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.618" />
@@ -215,7 +248,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.967" />
+        app:layout_constraintVertical_bias="0.974" />
 
     <ProgressBar
         android:id="@+id/recoveredProgressBar"
@@ -234,17 +267,16 @@
         android:scaleY="1.5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.3"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.749" />
 
     <TextView
-        android:id="@+id/newRecoveredTextView"
+        android:id="@+id/rightRecoveredTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto_light"
-        android:text="@string/new_text_view"
         android:textAlignment="viewEnd"
         android:textColor="@color/colorPrimary"
         android:textSize="18sp"
@@ -256,11 +288,10 @@
         app:layout_constraintVertical_bias="0.09" />
 
     <TextView
-        android:id="@+id/oldRecoveredTextView"
+        android:id="@+id/leftRecoveredTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto_light"
-        android:text="@string/old_text_view"
         android:textAlignment="viewStart"
         android:textColor="@color/colorPrimary"
         android:textSize="18sp"
@@ -304,22 +335,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.978" />
-
-    <Spinner
-        android:id="@+id/spinner"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/colorPrimary"
-        android:paddingStart="50dp"
-        android:paddingEnd="50dp"
-        android:scaleX="1"
-        android:scaleY="1"
-        android:spinnerMode="dropdown"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.021" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

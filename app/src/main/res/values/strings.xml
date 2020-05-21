@@ -4,9 +4,10 @@
     <string name="description">👀 Track Covid-19 stats globally</string>
     <string name="global_text_view">🌐 Global</string>
     <string name="time_text_view">🕓 Updated time: </string>
+    <string name="message_text_view">✊ Stay strong everyone!</string>
 
     <string name="confirmed_text_view">😷 Confirmed:</string>
-    <string name="death_text_view">🙏 Deaths:</string>
+    <string name="death_text_view">💀 Deaths:</string>
     <string name="recovered_text_view">💪 Recovered:</string>
 
     <string name="stats_button">📊 Detailed Stats</string>
