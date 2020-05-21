@@ -1,7 +1,5 @@
 package com.thaiduong.novid;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -10,6 +8,8 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -61,7 +61,7 @@ public class CompareActivity extends AppCompatActivity {
     }
 
     private void spinnerHandler(Spinner spinner, ArrayList<String> countryList, final int index) {
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, R.layout.custom_spinner, countryList);;
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, R.layout.custom_spinner, countryList);
         arrayAdapter.setDropDownViewResource(R.layout.custom_spinner_dropdown);
 
         spinner.setAdapter(arrayAdapter);
@@ -86,14 +86,14 @@ public class CompareActivity extends AppCompatActivity {
         fetchData("Compare", country1Index, country2Index);
     }
 
-    private void fetchData(final String scope, int country1Index, int country2Index) {
+    private void fetchData(final String scope, final int country1Index, final int country2Index) {
         String url = "https://api.covid19api.com/summary";
-        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+        final JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        try {
-                            if (scope.equals("Countries")) {
+                        if (scope.equals("Countries")) {
+                            try {
                                 JSONArray dataArray = response.getJSONArray("Countries");
                                 int length = dataArray.length();
 
@@ -103,11 +103,27 @@ public class CompareActivity extends AppCompatActivity {
 
                                 spinnerHandler(spinner1, countryList, 1);
                                 spinnerHandler(spinner2, countryList, 2);
-                            }
-                        } catch (JSONException e) {
-                            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
-                        }
 
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            try {
+                                JSONArray dataArray = response.getJSONArray("Countries");
+
+                                JSONObject dataObject1 = dataArray.getJSONObject(country1Index);
+                                JSONObject dataObject2 = dataArray.getJSONObject(country2Index);
+
+                                confirmed.updateCompare(dataObject1.getInt("TotalConfirmed"), dataObject2.getInt("TotalConfirmed"), getResources());
+                                deaths.updateCompare(dataObject1.getInt("TotalDeaths"), dataObject2.getInt("TotalDeaths"), getResources());
+                                recovered.updateCompare(dataObject1.getInt("TotalRecovered"), dataObject2.getInt("TotalRecovered"), getResources());
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
                     }
                 },
                 new Response.ErrorListener() {
