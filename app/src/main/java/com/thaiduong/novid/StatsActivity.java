@@ -76,12 +76,7 @@ public class StatsActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 scope = countryList.get(position);
-
-                if (scopeIndex > 0) {
-                    scopeIndex = position - 1;
-                } else {
-                    scopeIndex = 0;
-                }
+                scopeIndex = position - 1;
 
                 vibrator.vibrate(vibratingDuration);
             }
