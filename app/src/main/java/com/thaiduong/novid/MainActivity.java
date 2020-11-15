@@ -16,7 +16,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
@@ -28,15 +27,13 @@ import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
 
-    private RequestQueue requestQueue;
-
     private TextView globalTextView;
     private TextView timeTextView;
 
-    private Vibrator vibrator;
-    private int vibratingDuration = 50;
+    private RequestQueue requestQueue;
 
-    private AdView adView;
+    private Vibrator vibrator;
+    private final int vibratingDuration = 50;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        adView = findViewById(R.id.adView);
+        AdView adView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
     }
@@ -103,5 +100,12 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
         requestQueue.add(objectRequest);
+    }
+
+    public static String countryCodeToEmoji(String countryCode)
+    {
+        int firstLetter = Character.codePointAt(countryCode, 0) - 0x41 + 0x1F1E6;
+        int secondLetter = Character.codePointAt(countryCode, 1) - 0x41 + 0x1F1E6;
+        return new String(Character.toChars(firstLetter)) + new String(Character.toChars(secondLetter));
     }
 }

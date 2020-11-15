@@ -27,10 +27,11 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Random;
 
+import static com.thaiduong.novid.MainActivity.countryCodeToEmoji;
+
 public class CompareActivity extends AppCompatActivity {
 
-    private ArrayList<String> countryList = new ArrayList<>();
-    private String[] flags;
+    private final ArrayList<String> countryList = new ArrayList<>();
 
     private Spinner spinner1;
     private Spinner spinner2;
@@ -45,9 +46,9 @@ public class CompareActivity extends AppCompatActivity {
     private RequestQueue requestQueue;
 
     private Vibrator vibrator;
-    private int vibratingDuration = 50;
+    private final int vibratingDuration = 50;
 
-    private Random random = new Random();
+    private final Random random = new Random();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +63,6 @@ public class CompareActivity extends AppCompatActivity {
         confirmed = new DisplayElement((TextView) findViewById(R.id.leftConfirmedTextView), (TextView) findViewById(R.id.rightConfirmedTextView), (TextView) findViewById(R.id.totalConfirmedTextView), (ProgressBar) findViewById(R.id.confirmedProgressBar));
         deaths = new DisplayElement((TextView) findViewById(R.id.leftDeathTextView), (TextView) findViewById(R.id.rightDeathTextView), (TextView) findViewById(R.id.totalDeathTextView), (ProgressBar) findViewById(R.id.deathProgressBar));
         recovered = new DisplayElement((TextView) findViewById(R.id.leftRecoveredTextView), (TextView) findViewById(R.id.rightRecoveredTextView), (TextView) findViewById(R.id.totalRecoveredTextView), (ProgressBar) findViewById(R.id.recoveredProgressBar));
-
-        flags = getResources().getStringArray(R.array.flags);
 
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
@@ -115,7 +114,7 @@ public class CompareActivity extends AppCompatActivity {
                                 int length = dataArray.length();
 
                                 for (int i = 0; i < length; i++) {
-                                    countryList.add(flags[i] + " " + dataArray.getJSONObject(i).getString("Country"));
+                                    countryList.add(countryCodeToEmoji(dataArray.getJSONObject(i).getString("CountryCode")) + " " + dataArray.getJSONObject(i).getString("Country"));
                                 }
 
                                 spinnerHandler(spinner1, countryList, 1);
@@ -134,9 +133,12 @@ public class CompareActivity extends AppCompatActivity {
                                 JSONObject dataObject1 = dataArray.getJSONObject(country1Index);
                                 JSONObject dataObject2 = dataArray.getJSONObject(country2Index);
 
-                                confirmed.updateCompare(dataObject1.getInt("TotalConfirmed"), dataObject2.getInt("TotalConfirmed"), flags, country1Index, country2Index);
-                                deaths.updateCompare(dataObject1.getInt("TotalDeaths"), dataObject2.getInt("TotalDeaths"), flags, country1Index, country2Index);
-                                recovered.updateCompare(dataObject1.getInt("TotalRecovered"), dataObject2.getInt("TotalRecovered"), flags, country1Index, country2Index);
+                                String flag1 = countryCodeToEmoji(dataArray.getJSONObject(country1Index).getString("CountryCode"));
+                                String flag2 = countryCodeToEmoji(dataArray.getJSONObject(country2Index).getString("CountryCode"));
+
+                                confirmed.updateCompare(dataObject1.getInt("TotalConfirmed"), dataObject2.getInt("TotalConfirmed"), flag1, flag2);
+                                deaths.updateCompare(dataObject1.getInt("TotalDeaths"), dataObject2.getInt("TotalDeaths"), flag1, flag2);
+                                recovered.updateCompare(dataObject1.getInt("TotalRecovered"), dataObject2.getInt("TotalRecovered"), flag1, flag2);
 
                                 spinner1.setSelection(country1Index);
                                 spinner2.setSelection(country2Index);

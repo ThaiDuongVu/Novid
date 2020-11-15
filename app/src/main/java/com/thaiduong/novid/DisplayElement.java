@@ -6,11 +6,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 class DisplayElement {
-    private TextView leftTextView;
-    private TextView rightTextView;
-    private TextView totalTextView;
+    private final TextView leftTextView;
+    private final TextView rightTextView;
+    private final TextView totalTextView;
 
-    private ProgressBar progressBar;
+    private final ProgressBar progressBar;
 
     DisplayElement(TextView leftTextView, TextView rightTextView, TextView totalTextView, ProgressBar progressBar) {
         this.leftTextView = leftTextView;
@@ -20,7 +20,6 @@ class DisplayElement {
         this.progressBar = progressBar;
     }
 
-    @SuppressLint("SetTextI18n")
     void updateStats(int newInt, int total, Resources resources) {
         leftTextView.setText(resources.getString(R.string.old_text_view) + " " + (total - newInt));
         rightTextView.setText(resources.getString(R.string.new_text_view) + " " + newInt);
@@ -30,11 +29,10 @@ class DisplayElement {
         progressBar.setProgress(total - newInt);
     }
 
-    @SuppressLint("SetTextI18n")
-    void updateCompare(int compareElement1, int compareElement2, String[] flags, int country1Index, int country2Index) {
-        leftTextView.setText(flags[country1Index] + ": " + compareElement1);
-        rightTextView.setText(flags[country2Index] + ": " + compareElement2);
-        totalTextView.setText(flags[country1Index] + " + " + flags[country2Index] + ": " + (compareElement1 + compareElement2));
+    void updateCompare(int compareElement1, int compareElement2, String flag1, String flag2) {
+        leftTextView.setText(flag1 + ": " + compareElement1);
+        rightTextView.setText(flag2 + ": " + compareElement2);
+        totalTextView.setText(flag1 + " + " + flag2 + ": " + (compareElement1 + compareElement2));
 
         progressBar.setMax(compareElement1 + compareElement2);
         progressBar.setProgress(compareElement1);

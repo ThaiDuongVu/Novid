@@ -1,8 +1,5 @@
 package com.thaiduong.novid;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Vibrator;
@@ -12,7 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -27,24 +25,25 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import static com.thaiduong.novid.MainActivity.countryCodeToEmoji;
+
 public class StatsActivity extends AppCompatActivity {
 
-    private RequestQueue requestQueue;
+    private final ArrayList<String> countryList = new ArrayList<>();
+
+    private Spinner spinner;
 
     private DisplayElement confirmed;
     private DisplayElement deaths;
     private DisplayElement recovered;
 
-    private Spinner spinner;
-
     private String scope;
     private int scopeIndex;
 
-    private ArrayList<String> countryList = new ArrayList<>();
-    private String[] flags;
+    private RequestQueue requestQueue;
 
     private Vibrator vibrator;
-    private int vibratingDuration = 50;
+    private final int vibratingDuration = 50;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +57,6 @@ public class StatsActivity extends AppCompatActivity {
         recovered = new DisplayElement((TextView) findViewById(R.id.oldRecoveredTextView), (TextView) findViewById(R.id.newRecoveredTextView), (TextView) findViewById(R.id.totalRecoveredTextView), (ProgressBar) findViewById(R.id.recoveredProgressBar));
 
         spinner = findViewById(R.id.spinner);
-
-        flags = getResources().getStringArray(R.array.flags);
 
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
@@ -106,7 +103,7 @@ public class StatsActivity extends AppCompatActivity {
 
                                 countryList.add(getResources().getString(R.string.global_text_view));
                                 for (int i = 0; i < length; i++) {
-                                    countryList.add(flags[i] + " " + dataArray.getJSONObject(i).getString("Country"));
+                                    countryList.add(countryCodeToEmoji(dataArray.getJSONObject(i).getString("CountryCode")) + " " + dataArray.getJSONObject(i).getString("Country"));
                                 }
 
                                 spinnerHandler(spinner, countryList);
