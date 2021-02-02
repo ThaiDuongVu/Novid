@@ -1,6 +1,5 @@
 package com.thaiduong.novid;
 
-import android.annotation.SuppressLint;
 import android.content.res.Resources;
 import android.widget.ProgressBar;
 import android.widget.TextView;

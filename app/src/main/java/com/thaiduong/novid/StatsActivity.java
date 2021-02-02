@@ -29,21 +29,23 @@ import static com.thaiduong.novid.MainActivity.countryCodeToEmoji;
 
 public class StatsActivity extends AppCompatActivity {
 
+    // List of countries to display stats for
     private final ArrayList<String> countryList = new ArrayList<>();
-
+    private final int vibratingDuration = 50;
+    // Drop down spinner to select country
     private Spinner spinner;
-
+    // Display element for confirmed cases
     private DisplayElement confirmed;
+    // Display element for deaths
     private DisplayElement deaths;
+    // Display element for recovered cases
     private DisplayElement recovered;
-
+    // Scope of the display element
     private String scope;
     private int scopeIndex;
-
     private RequestQueue requestQueue;
-
+    // Current device's vibrating functionality
     private Vibrator vibrator;
-    private final int vibratingDuration = 50;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,11 +62,13 @@ public class StatsActivity extends AppCompatActivity {
 
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
+        // Fetch global data on startup
         fetchData(getResources().getString(R.string.global_text_view), 1);
         fetchData("Countries", 1);
     }
 
-    private void spinnerHandler(Spinner spinner, final ArrayList<String> countryList) {
+    // Handle spinner drop down & items to display
+    private void handleSpinner(Spinner spinner, final ArrayList<String> countryList) {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, R.layout.custom_spinner, countryList);
         arrayAdapter.setDropDownViewResource(R.layout.custom_spinner_dropdown);
 
@@ -85,14 +89,16 @@ public class StatsActivity extends AppCompatActivity {
         });
     }
 
+    // Update view to display fetched data
     public void update(View view) {
         vibrator.vibrate(vibratingDuration);
         fetchData(scope, scopeIndex);
     }
 
+    // Fetch data from COVID19 API and update text views accordingly
     private void fetchData(final String scope, final int scopeIndex) {
         String url = "https://api.covid19api.com/summary";
-        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+        JsonObjectRequest apiRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -106,10 +112,12 @@ public class StatsActivity extends AppCompatActivity {
                                     countryList.add(countryCodeToEmoji(dataArray.getJSONObject(i).getString("CountryCode")) + " " + dataArray.getJSONObject(i).getString("Country"));
                                 }
 
-                                spinnerHandler(spinner, countryList);
+                                handleSpinner(spinner, countryList);
+
                             } else {
                                 JSONObject dataObject;
 
+                                // Fetch global data
                                 if (scope.equals(getResources().getString(R.string.global_text_view))) {
                                     dataObject = response.getJSONObject("Global");
                                 } else {
@@ -117,12 +125,15 @@ public class StatsActivity extends AppCompatActivity {
                                     dataObject = dataArray.getJSONObject(scopeIndex);
                                 }
 
+                                // Update display elements based on response object
                                 confirmed.updateStats(dataObject.getInt("NewConfirmed"), dataObject.getInt("TotalConfirmed"), getResources());
                                 deaths.updateStats(dataObject.getInt("NewDeaths"), dataObject.getInt("TotalDeaths"), getResources());
                                 recovered.updateStats(dataObject.getInt("NewRecovered"), dataObject.getInt("TotalRecovered"), getResources());
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
+
+                            // If there's an exception then try fetching data again
                             fetchData(scope, scopeIndex);
                         }
                     }
@@ -130,9 +141,12 @@ public class StatsActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        // If there's an error then try fetching data again
                         fetchData(scope, scopeIndex);
                     }
                 });
-        requestQueue.add(objectRequest);
+
+        // Add created request to request queue to start fetching.
+        requestQueue.add(apiRequest);
     }
 }

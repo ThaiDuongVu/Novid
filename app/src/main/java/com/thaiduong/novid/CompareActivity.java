@@ -31,20 +31,26 @@ import static com.thaiduong.novid.MainActivity.countryCodeToEmoji;
 
 public class CompareActivity extends AppCompatActivity {
 
+    // List of countries to display stats for
     private final ArrayList<String> countryList = new ArrayList<>();
 
+    // // Drop down spinner to select country
     private Spinner spinner1;
     private Spinner spinner2;
 
     private int country1Index = 0;
     private int country2Index = 0;
 
+    // Display element for confirmed cases
     private DisplayElement confirmed;
+    // Display element for deaths
     private DisplayElement deaths;
+    // Display element for recovered cases
     private DisplayElement recovered;
 
     private RequestQueue requestQueue;
 
+    // Current device's vibrating functionality
     private Vibrator vibrator;
     private final int vibratingDuration = 50;
 
@@ -66,10 +72,12 @@ public class CompareActivity extends AppCompatActivity {
 
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
+        // Fetch data to compare random countries on startup
         fetchData("Countries", 0, 1);
     }
 
-    private void spinnerHandler(Spinner spinner, ArrayList<String> countryList, final int index) {
+    // Handle spinner drop down & items to display
+    private void handleSpinner(Spinner spinner, ArrayList<String> countryList, final int index) {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, R.layout.custom_spinner, countryList);
         arrayAdapter.setDropDownViewResource(R.layout.custom_spinner_dropdown);
 
@@ -92,19 +100,22 @@ public class CompareActivity extends AppCompatActivity {
         });
     }
 
+    // Update view to display fetched data
     public void update(View view) {
         vibrator.vibrate(vibratingDuration);
         fetchData("Compare", country1Index, country2Index);
     }
 
+    // Fetch data from COVID19 API and update text views accordingly
     private void fetchData(final String scope, final int country1Index, final int country2Index) {
+        // Refuse to compare 2 countries that are the same
         if (country1Index == country2Index) {
             Toast.makeText(getApplicationContext(), "Cannot compare the same country", Toast.LENGTH_SHORT).show();
             return;
         }
 
         String url = "https://api.covid19api.com/summary";
-        final JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+        final JsonObjectRequest apiRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -117,8 +128,8 @@ public class CompareActivity extends AppCompatActivity {
                                     countryList.add(countryCodeToEmoji(dataArray.getJSONObject(i).getString("CountryCode")) + " " + dataArray.getJSONObject(i).getString("Country"));
                                 }
 
-                                spinnerHandler(spinner1, countryList, 1);
-                                spinnerHandler(spinner2, countryList, 2);
+                                handleSpinner(spinner1, countryList, 1);
+                                handleSpinner(spinner2, countryList, 2);
 
                                 fetchData("Compare", random.nextInt(countryList.size()), random.nextInt(countryList.size()));
 
@@ -136,15 +147,19 @@ public class CompareActivity extends AppCompatActivity {
                                 String flag1 = countryCodeToEmoji(dataArray.getJSONObject(country1Index).getString("CountryCode"));
                                 String flag2 = countryCodeToEmoji(dataArray.getJSONObject(country2Index).getString("CountryCode"));
 
+                                // Update display elements based on response object
                                 confirmed.updateCompare(dataObject1.getInt("TotalConfirmed"), dataObject2.getInt("TotalConfirmed"), flag1, flag2);
                                 deaths.updateCompare(dataObject1.getInt("TotalDeaths"), dataObject2.getInt("TotalDeaths"), flag1, flag2);
                                 recovered.updateCompare(dataObject1.getInt("TotalRecovered"), dataObject2.getInt("TotalRecovered"), flag1, flag2);
 
+                                // Update spinner selection
                                 spinner1.setSelection(country1Index);
                                 spinner2.setSelection(country2Index);
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
+
+                                // If there's an exception then try fetching data again
                                 fetchData(scope, country1Index, country2Index);
                             }
                         }
@@ -153,9 +168,12 @@ public class CompareActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        // If there's an error then try fetching data again
                         fetchData(scope, country1Index, country2Index);
                     }
                 });
-        requestQueue.add(objectRequest);
+
+        // Add created request to request queue to start fetching.
+        requestQueue.add(apiRequest);
     }
 }
